@@ -23,10 +23,11 @@ def get_c4(tokenizer, n_samples, seq_len):
     return torch.cat(tokenized_samples, dim=0)
 
 def get_bookcorpus(tokenizer, n_samples, seq_len):
+    # bookcorpus no longer available on HuggingFace; use wikitext-103 instead
     traindata = load_dataset(
-        'bookcorpus', split='train'
+        'wikitext', 'wikitext-103-raw-v1', split='train'
     )
-    
+
     tokenized_samples, history = [], []
     for _ in range(n_samples):
         while True:
@@ -37,7 +38,7 @@ def get_bookcorpus(tokenizer, n_samples, seq_len):
                 break
         i = random.randint(0, tokenized_sample.input_ids.shape[1] - seq_len)
         tokenized_samples.append(tokenized_sample.input_ids[:, i:i+seq_len])
-    return torch.cat(tokenized_samples, dim=0 )
+    return torch.cat(tokenized_samples, dim=0)
 
 def get_examples(dataset, tokenizer, n_samples, seq_len = 128):
     if dataset == 'c4':
