@@ -22,7 +22,7 @@ from torch.utils.data import DataLoader, TensorDataset
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 HF_MODEL = "meta-llama/Llama-2-7b-hf"
-RATIOS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55]
+RATIOS = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 0.7]
 SCENARIOS = [
     {"id": 1,  "bs": 1,  "seq_len": 4096},
     {"id": 2,  "bs": 2,  "seq_len": 2048},
