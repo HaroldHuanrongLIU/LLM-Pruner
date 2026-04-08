@@ -9,4 +9,9 @@ dependencies = [
     "sentencepiece",
     "accelerate",
     "protobuf",
+    "lm-eval>=0.4.11",
+    "jieba>=0.42.1",
+    "fuzzywuzzy>=0.18.0",
+    "rouge>=1.0.1",
+    "wonderwords>=3.0.1",
 ]

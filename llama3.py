@@ -44,6 +44,7 @@ def main(args):
     )
     if args.device != "cpu":
         model.half()
+    model.gradient_checkpointing_enable()
 
     if args.test_before_train:
         logger.log("\n==================Generation Results before Pruning================\n")
@@ -146,10 +147,14 @@ def main(args):
                                 module_param.acc_grad = copy.deepcopy(module_param.grad)
                         model.zero_grad()
                         del loss.grad
-                    
-                loss = model(example_prompts, labels=example_prompts).loss
-                logger.log("Loss = {}".format(loss))
-                loss.backward()
+
+                # Accumulate gradients one example at a time to avoid OOM on large models
+                for j in range(example_prompts.shape[0]):
+                    batch_input = example_prompts[j].unsqueeze(0)
+                    loss = model(batch_input, labels=batch_input).loss / example_prompts.shape[0]
+                    logger.log("Loss = {}".format(loss.item()))
+                    loss.backward()
+                    del loss
 
             # 1. Consecutive for grouped KV
             # 2. 
